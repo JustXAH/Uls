@@ -6,9 +6,7 @@ OBJ_DIR = obj/
 INC_DIR = inc/
 
 
-DIRS	= $(notdir $(wildcard $(SRC_DIR)*))
-FILES	= $(foreach dir, $(DIRS), $(basename $(wildcard $(SRC_DIR)$(dir)/*.c)))
-SRC		= $(FILES:%=%.c)
+SRC = $(wildcard $(SRC_DIR)/*.c)
 OBJ		= $(SRC:src/%.c=$(OBJ_DIR)%.o)
 INC_H	= $(wildcard $(INC_DIR)*.h)
 
@@ -30,7 +28,7 @@ COMPILE	 = $(CC) $(GFLAGS) $(IFLAGS) $(LIB_BIN)
 
 MAKE_M	 = make -sf Makefile -C
 MKDIR	 = mkdir -p
-RM		 = /bin/rm -rf
+RM	 = /bin/rm -rf
 
 
 all: $(NAME)

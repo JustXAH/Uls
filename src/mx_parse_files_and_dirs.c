@@ -29,22 +29,23 @@ static void check_file_type(t_uls **uls, char **dont_exist,
 static void save_file_and_dirs(t_uls **uls, int diff) {
     struct stat sb;
     char **dont_exist = (char **)malloc(sizeof(char *) * diff + 1);
-    int i = 0;
 
     (*uls)->count_dirs = 0;
     (*uls)->count_files = 0;
     (*uls)->wrong = 0;
-    for (i = 0; i <= diff; dont_exist[i++] = NULL);
-    for (i = 0; (*uls)->all_files[i] != NULL; i++) {
+    for (int k = 0; k <= diff; dont_exist[k++] = NULL);
+    for (int i = 0; (*uls)->all_files[i] != NULL; i++) {
         sb.st_mode = 0;
-        stat((*uls)->all_files[i], &sb);
+        if ((*uls)->flag_l == true)
+            lstat((*uls)->all_files[i], &sb);
+        else
+            stat((*uls)->all_files[i], &sb);
         check_file_type(uls, &dont_exist[(*uls)->wrong], i, sb);
     }
-    if (((*uls)->flags && !mx_strchr((*uls)->flags, 'f'))
-        || (*uls)->flags == NULL)
+    if (((*uls)->flags && !mx_strchr((*uls)->flags, 'f')) || !(*uls)->flags)
         mx_bubble_sort(dont_exist, (*uls)->wrong);
-    for (i = 0; i < (*uls)->wrong; i++)
-        mx_error_no_file_or_dir(dont_exist[i]);
+    for (int j = 0; j < (*uls)->wrong; j++)
+        mx_error_no_file_or_dir(dont_exist[j]);
     mx_del_strarr(&dont_exist);
 }
 

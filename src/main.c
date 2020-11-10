@@ -5,12 +5,9 @@ int main(int argc, char *argv[]) {
     t_flags flag;
     uls->dir_content = NULL;
 
-    if (argc > 1) {
-        mx_arguments_parse(&uls, argv, argc);
-    }
     mx_flags_initialization(&flag);
-    if (argc > 1 && uls->flags != NULL) {
-        mx_flags_manager(uls, &flag);
+    if (argc > 1) {
+        mx_arguments_parse(&uls, &flag, argv, argc);
     }
     if (flag.f == false && flag.t == false) {
         mx_bubble_sort(uls->dirs, uls->count_dirs);

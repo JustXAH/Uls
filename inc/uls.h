@@ -13,7 +13,7 @@
 #include <time.h>
 
 
-#define FLAGS     "@1AaCceFfGhlmpRrSTtu\0"
+#define FLAGS     "@1AaCcFfGhlmpRrSTtu\0"
 #define FLAGS_NUM 20
 #define RED       "\x1B[31m"
 #define GRN       "\x1B[32m"
@@ -42,6 +42,7 @@ typedef struct s_uls {
     int count_files;
     int count_dirs;
     int wrong;
+    bool flag_l;
 }              t_uls;
 
 typedef struct s_flags {
@@ -106,13 +107,15 @@ typedef struct s_output {
 /*
  *    PARSING
  */
-void mx_arguments_parse(t_uls **uls, char **argv, int argc);
+void mx_arguments_parse(t_uls **uls, t_flags *flag, char **argv, int argc);
 void mx_parse_flags(t_uls **uls, char **argv, int argc, int *count_args);
 void mx_parse_files_and_dirs(t_uls **uls, char **argv, int argc, int count);
 
 /*
  *    FLAGS
  */
+void mx_flags_initialization(t_flags *flag);
+void mx_flags_manager(t_uls *uls, t_flags *flag);
 void mx_flag_l_R(t_flags *flag, t_l **flag_l,
                  char **dir_content, char *main_dir);
 char *mx_flag_h(long long size, char *tmp, char *str);
@@ -120,10 +123,8 @@ void mx_malloc_for_arr(t_l **flag_l);
 void mx_filling_arr(t_l **flag_l, char **str, t_flags *flag, char *main_path);
 void mx_build_name(char **path, t_flags *flag, int i, t_l **flag_l);
 void mx_flag_at(char *path, t_l **flag_l);
-void mx_flags_initialization(t_flags *flag);
-void mx_flags_manager(t_uls *uls, t_flags *flag);
 void mx_flag_l_launch_manager(t_uls *uls, t_flags *flag);
-void mx_flag_l(t_l **flag_l, t_flags *flag, char *main_dir);
+void mx_flag_l(t_l **flag_l, t_flags *flag, t_uls *uls, char *main_dir);
 char *mx_for_flag_l(struct stat sb, char *path, t_l **flag_l);
 void mx_space_for_flag_l(t_l **flag_l, t_size_for_l **size_for_l);
 char *mx_flag_l_size(struct stat buff, t_flags *flag, t_l **flag_l);
@@ -164,8 +165,9 @@ void mx_output_in_one_line(t_flags *flag, t_output *opt, int max_len);
 void mx_output_multi_col(t_flags *flag, t_output *opt, int max_len, int col);
 void mx_output_separated_by_commas(t_flags *flag, t_output *opt);
 void mx_colorized_output(char *filename, char *path);
-void mx_output_flag_l(t_l **flag_l, t_size_for_l **size_for_l, t_flags *flag,
-                      char *main_dir);
+void mx_output_flag_l(t_l **flag_l, t_size_for_l **size_for_l, t_flags *flag);
+void mx_print_dir_name_flag_l(t_l **flag_l, t_flags *flag, char *main_dir,
+                  char **dir_content);
 
 /*
  * Free memory

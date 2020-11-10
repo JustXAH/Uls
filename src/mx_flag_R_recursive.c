@@ -4,20 +4,29 @@
 
 #include "uls.h"
 
+static void invisible_file_check(t_flags *flag, char **dir_content, int *i) {
+    if (flag->a && (mx_strcmp(dir_content[(*i)], ".") == 0
+                    && mx_strcmp(dir_content[(*i) + 1], "..") == 0))
+        *i += 2;
+    else if (flag->r && flag->a &&
+             (mx_strcmp(dir_content[(*i)], "..") == 0
+              && mx_strcmp(dir_content[(*i) + 1], ".") == 0))
+        *i += 2;
+}
+
 static char **dir_path_creator(t_flags *flag, char *main_dir,
                                int *content_amount) {
     char **dir_content = NULL;
     char **dirs_path = NULL;
-    int i = 0;
     int j = 0;
 
     dir_content = mx_open_dir(flag, main_dir, content_amount);
     dirs_path = (char **)malloc(sizeof(char *) * (*content_amount) + 1);
-    for (i = 0; i <= (*content_amount); dirs_path[i++] = NULL);
-    for (i = 0; i < (*content_amount); i++) {
-        if (flag->a == true && (mx_strcmp(dir_content[i], ".") == 0
-                                && mx_strcmp(dir_content[i + 1], "..") == 0))
-            i += 2;
+    for (int k = 0; k <= (*content_amount); dirs_path[k++] = NULL);
+    for (int i = 0; i < (*content_amount); i++) {
+        if (dir_content[i] != NULL && dir_content[i + 1] != NULL) {
+            invisible_file_check(flag, dir_content, &i);
+        }
         if (dir_content[i])
             dirs_path[j++] = mx_strjoin_uls(main_dir, dir_content[i]);
     }

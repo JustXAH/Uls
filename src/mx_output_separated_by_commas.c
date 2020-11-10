@@ -3,6 +3,7 @@
 //
 
 #include "uls.h"
+#include <stdio.h>
 
 static char get_delimiter(int *len, char *name, int win_col, bool last_obj) {
     char delimiter;
@@ -43,9 +44,12 @@ void mx_output_separated_by_commas(t_flags *flag, t_output *opt) {
         }
         flag->G == true ? mx_colorized_output(opt->filename[i], opt->path[i])
                         : mx_printstr(opt->filename[i]);
-        if (flag->F == true || flag->p == true)
+        if ((flag->F == true || flag->p == true) && opt->symbol[i][0] != '\0') {
             mx_printstr(opt->symbol[i]);
-        len += mx_strlen(opt->filename[i]);
+            len += mx_strlen(opt->filename[i]) + 1;
+        }
+        else
+            len += mx_strlen(opt->filename[i]);
     }
     mx_printstr("\n");
 }

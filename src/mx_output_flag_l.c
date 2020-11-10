@@ -42,19 +42,6 @@ static void printspace_2(t_l **flag_l, t_size_for_l **size_for_l,
     }
 }
 
-static void printblock(t_l **flag_l, t_flags *flag, char *main_dir) {
-    if ((*flag_l)->file_arg == false) {
-        if ((*flag_l)->many_fls == true &&
-            flag->R == false) {
-            mx_printstr(main_dir);
-            mx_printstr(":\n");
-        }
-        mx_printstr("total ");
-        mx_printint((*flag_l)->bloks);
-        mx_printstr("\n");
-    }
-}
-
 static void output_flag_l(t_l **flag_l, t_size_for_l **size_for_l, int i) {
     mx_printstr((*flag_l)->mode[i]);
     printspace(flag_l, size_for_l, 1, i);
@@ -72,9 +59,7 @@ static void output_flag_l(t_l **flag_l, t_size_for_l **size_for_l, int i) {
     mx_printchar(' ');
 }
 
-void mx_output_flag_l(t_l **flag_l, t_size_for_l **size_for_l, t_flags *flag,
-                      char *main_dir) {
-    printblock(flag_l, flag, main_dir);
+void mx_output_flag_l(t_l **flag_l, t_size_for_l **size_for_l, t_flags *flag) {
     for (int i = 0; (*flag_l)->name[i]; i++) {
         output_flag_l(flag_l, size_for_l, i);
         if ((*flag_l)->size[i][5] == 'x')

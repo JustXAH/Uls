@@ -38,7 +38,7 @@ static void check_flags(t_uls **uls, char *argv, int *count) {
 
 void mx_parse_flags(t_uls **uls, char **argv, int argc, int *count_args) {
     int count = 0;
-    int i = 1;
+    int i = 0;
     (*uls)->count_flags = 0;
 
     for (i = 1; i < argc && argv[i][0] == '-'; i++) {
@@ -46,12 +46,13 @@ void mx_parse_flags(t_uls **uls, char **argv, int argc, int *count_args) {
             (*count_args) = i + 1;
             return;
         }
-        if (argv[i][0] == '-')
+        if (argv[i][0] == '-' && argv[i][1] != '\0')
             check_flags(uls, argv[i], &count);
 
         else if (argv[i][0] != '-')
             break;
     }
     (*uls)->count_flags = count;
-    (*count_args) = i;
+
+    (*count_args) = count == 0 ? 1 : i;
 }

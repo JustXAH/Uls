@@ -34,7 +34,7 @@ void mx_flag_l_R(t_flags *flag, t_l **flag_l,
         for (int i = 0; dir_names[i] != NULL; i++) {
             mx_flag_l_clean_memory((*flag_l));
             print_dir_name(dir_names[i]);
-            mx_flag_l(flag_l, flag, dir_names[i]);
+            mx_flag_l(flag_l, flag, NULL, dir_names[i]);
         }
     }
     free_memory(dir_names, dir_path);
